@@ -24,5 +24,4 @@ object Command {
   private class MyCommand(val name: String, function: (Kunou, Message, String) => Unit) extends Command {
     override def execute(bot: Kunou, message: Message, prefix: String): Unit = function(bot, message, prefix)
   }
-
 }
