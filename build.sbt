@@ -1,5 +1,5 @@
 lazy val kunou = (project in file("."))
-  .enablePlugins(UniversalPlugin)
+  .enablePlugins(JavaAppPackaging)
   .settings(
       organization := "io.github.samophis",
       name := "Kunou",
@@ -9,8 +9,9 @@ lazy val kunou = (project in file("."))
       resolvers += "jitpack" at "https://jitpack.io",
 
       libraryDependencies ++= Seq(
-        "com.mewna" % "catnip" % "1b5e2a7",
+        "com.mewna" % "catnip" % "0ad521e64addf4261e5836f61080c43b97aa3f60",
         "io.sentry" % "sentry-logback" % "1.7.29",
-        "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
+        "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
+        "io.github.classgraph" % "classgraph" % "4.8.60"
       )
   )
