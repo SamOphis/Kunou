@@ -9,16 +9,16 @@ import io.sentry.Sentry
 class Kunou {
   private[this] val token = sys.env("KUNOU_BOT_TOKEN")
   private[this] val logger = Logger[Kunou]
-  val catnip: Catnip = Catnip.catnip(catnipOptions)
   private[this] val catnipOptions = new CatnipOptions(token)
     .validateToken(true)
+  private[this] val commandManager = new CommandManager(this)
 
+  val catnip: Catnip = Catnip.catnip(catnipOptions)
   val ownerId: Long = sys.env("KUNOU_OWNER_ID").toLong
   val defaultCommandPrefix: String = sys.env.get("KUNOU_DEFAULT_PREFIX") match {
     case None => "k."
     case Some(default) => default
   }
-  private[this] val commandManager = new CommandManager(this)
 
   // There is a warning here (can convert to method value), but Catnip doesn't like it.
   // +1 for Java interoperability, Scala.
