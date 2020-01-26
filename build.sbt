@@ -9,9 +9,19 @@ lazy val kunou = (project in file("."))
       resolvers += "jitpack" at "https://jitpack.io",
 
       libraryDependencies ++= Seq(
+        // Catnip v2 before the broken Gateway Intents stuff
         "com.mewna" % "catnip" % "0ad521e64addf4261e5836f61080c43b97aa3f60",
+
+        // Logging Stuff
         "io.sentry" % "sentry-logback" % "1.7.29",
         "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
-        "io.github.classgraph" % "classgraph" % "4.8.60"
+
+        // ClassGraph (used to automatically register command classes)
+        "io.github.classgraph" % "classgraph" % "4.8.60",
+
+        // Database Stuff
+        "net.debasishg" %% "redisclient" % "3.20",
+        "org.postgresql" % "postgresql" % "42.2.8",
+        "io.getquill" %% "quill-jdbc" % "3.5.0"
       )
   )
