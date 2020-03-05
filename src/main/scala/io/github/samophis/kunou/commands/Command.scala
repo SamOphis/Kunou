@@ -2,6 +2,7 @@ package io.github.samophis.kunou.commands
 
 import com.mewna.catnip.entity.message.Message
 import com.mewna.catnip.entity.util.Permission
+import io.github.samophis.kunou.commands.CommandCategory.CommandCategory
 import io.github.samophis.kunou.startup.Kunou
 
 trait Command {
@@ -13,6 +14,7 @@ trait Command {
   // The aliases set is a set because there is no point where I have to use it in a Java library.
   val requiredUserPermissions: List[Permission] = List.empty
   val requiredBotPermissions: List[Permission] = List(Permission.SEND_MESSAGES)
+  val category: CommandCategory = CommandCategory.General
   val aliases: Set[String] = Set.empty
 
   def execute(bot: Kunou, message: Message, prefix: String): Unit = ()

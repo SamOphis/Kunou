@@ -19,9 +19,7 @@ lazy val kunou = (project in file("."))
         // ClassGraph (used to automatically register command classes)
         "io.github.classgraph" % "classgraph" % "4.8.60",
 
-        // Database Stuff
+        // Database Stuff (for now we're sticking with Redis)
         "net.debasishg" %% "redisclient" % "3.20",
-        "org.postgresql" % "postgresql" % "42.2.8",
-        "io.getquill" %% "quill-jdbc" % "3.5.0"
       )
   )

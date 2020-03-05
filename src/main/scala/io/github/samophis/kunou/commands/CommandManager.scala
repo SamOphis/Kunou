@@ -6,7 +6,6 @@ import com.mewna.catnip.entity.message.Message
 import com.typesafe.scalalogging.Logger
 import io.github.classgraph.ClassGraph
 import io.github.samophis.kunou.startup.Kunou
-import io.github.samophis.kunou.startup.Kunou.Guild
 
 import scala.collection.mutable
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,6 +43,7 @@ class CommandManager(private[this] val bot: Kunou) {
         val args = message.content.split("\\s+")
         val commandName = args(0).toLowerCase.substring(prefix.length)
         commands.get(commandName) match {
+
           case Some(command) if !message.member().hasPermissions(command.requiredUserPermissions: _*) =>
             message.channel().sendMessage("You don't have permission to use this command. \uD83D\uDE2D")
           case Some(command) if !message.guild().selfMember().hasPermissions(command.requiredBotPermissions: _*) =>
@@ -63,20 +63,7 @@ class CommandManager(private[this] val bot: Kunou) {
     val guildId = message.guildIdAsLong()
     bot.redisClient.hget(guildId, "_prefix") match {
       case Some(prefix) => prefix
-      case None =>
-        import bot.databaseContext._
-
-        val prefixQuery: Quoted[Query[String]] = quote {
-          query[Guild].filter(_.id == lift(guildId)).map(_.prefix)
-        }
-
-        run(prefixQuery).headOption match {
-          case Some(prefix) =>
-            bot.redisClient.hset(guildId, "_prefix", prefix)
-            prefix
-          case None => bot.defaultCommandPrefix
-        }
-
+      case None => bot.defaultCommandPrefix
     }
   }
 }

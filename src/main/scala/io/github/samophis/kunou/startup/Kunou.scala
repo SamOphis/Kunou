@@ -4,7 +4,6 @@ import com.mewna.catnip.shard.DiscordEvent
 import com.mewna.catnip.{Catnip, CatnipOptions}
 import com.redis.RedisClient
 import com.typesafe.scalalogging.Logger
-import io.getquill.{PostgresJdbcContext, SnakeCase}
 import io.github.samophis.kunou.commands.CommandManager
 import io.sentry.Sentry
 
@@ -22,8 +21,7 @@ class Kunou {
     case Some(default) => default
   }
   // Database Stuff
-  val databaseContext = new PostgresJdbcContext(SnakeCase, "ctx") // Configured in application.properties
-  val redisClient = new RedisClient("redis", 6379) // Kunou runs Redis via the Docker container
+  val redisClient = new RedisClient("localhost", 6379) // Kunou runs Redis.
 
   // There is a warning here (can convert to method value), but Catnip doesn't like it.
   // +1 for Java interoperability, Scala.
