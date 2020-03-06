@@ -25,7 +25,7 @@ class Kunou {
 
   // There is a warning here (can convert to method value), but Catnip doesn't like it.
   // +1 for Java interoperability, Scala.
-  catnip.observe(DiscordEvent.MESSAGE_CREATE).subscribe(commandManager.handleMessage(_))
+  catnip.observable(DiscordEvent.MESSAGE_CREATE).subscribe(commandManager.handleMessage(_))
   catnip.connect()
 
   sys.env.get("KUNOU_SENTRY_DSN") match {
