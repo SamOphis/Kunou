@@ -2,6 +2,8 @@ package io.github.samophis.kunou.commands
 
 import java.util.concurrent.Executors
 
+import com.github.natanbc.reliqua.request.RequestException
+import com.github.natanbc.weeb4j.image.Image
 import com.mewna.catnip.entity.message.Message
 import com.typesafe.scalalogging.Logger
 import io.github.classgraph.ClassGraph
@@ -35,6 +37,34 @@ class CommandManager(private[this] val bot: Kunou) {
       logger.info("Registered {}", classInfo.getSimpleName)
     })
   scanResult.close()
+
+  if (bot.weeb4JOption.isDefined) {
+    // usually with person: cuddle, dance, hug, kiss, lick, pat, slap, stare, tickle, bite, punch, poke, blush
+    // usually without person: awoo, neko, nom, owo, pout, smile, smug, triggered, nani, thinking, greet, shrug
+    // ----- sleepy, poi, baka
+
+    // We can merge these categories for now but later iterations of Kunou may separate them like in
+    // --- previous versions.
+    val emoteCommands = Set("cuddle", "dance", "hug", "kiss", "lick", "pat", "slap", "stare", "tickle", "bite",
+      "punch", "poke", "blush", "awoo", "neko", "nom", "owo", "pout", "smile", "smug", "triggered", "nani",
+      "thinking", "greet", "shrug", "sleepy", "poi", "baka")
+
+    emoteCommands.foreach(imageType => {
+      val command = Command(imageType, (_, message, _) => {
+        bot.weeb4JOption.get.getImageProvider.getRandomImage(imageType).async((image: Image) => {
+          val embed = okResponseBase(message).image(image.getUrl).build()
+          message.channel().sendMessage(embed)
+          () // scala hates java interop
+        }, (error: RequestException) => {
+          logger.error(s"Error when using $imageType command.", error)
+          message.channel.sendMessage(errorResponseBase(message).build())
+          ()
+        })
+      })
+
+      commands.put(imageType, command)
+    })
+  }
 
   def handleMessage(message: Message): Unit = if (message.channel().isText) {
     prefix(message).onComplete {

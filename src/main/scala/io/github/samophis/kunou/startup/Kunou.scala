@@ -1,5 +1,6 @@
 package io.github.samophis.kunou.startup
 
+import com.github.natanbc.weeb4j.{TokenType, Weeb4J}
 import com.mewna.catnip.shard.DiscordEvent
 import com.mewna.catnip.{Catnip, CatnipOptions}
 import com.redis.RedisClient
@@ -12,7 +13,6 @@ class Kunou {
   private[this] val logger = Logger[Kunou]
   private[this] val catnipOptions = new CatnipOptions(token)
     .validateToken(true)
-  private[this] val commandManager = new CommandManager(this)
 
   val catnip: Catnip = Catnip.catnip(catnipOptions)
   val ownerId: Long = sys.env("KUNOU_OWNER_ID").toLong
@@ -22,6 +22,14 @@ class Kunou {
   }
   // Database Stuff
   val redisClient = new RedisClient("localhost", 6379) // Kunou runs Redis.
+
+  // Weeb4J - Optional
+  val weeb4JOption = sys.env.get("KUNOU_WEEBSH_TOKEN").map {
+    new Weeb4J.Builder()
+      .setToken(TokenType.WOLKE, _)
+      .build()
+  }
+  private[this] val commandManager = new CommandManager(this)
 
   // There is a warning here (can convert to method value), but Catnip doesn't like it.
   // +1 for Java interoperability, Scala.

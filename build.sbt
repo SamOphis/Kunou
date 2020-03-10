@@ -23,6 +23,9 @@ lazy val kunou = (project in file("."))
 
         // Database Stuff (for now we're sticking with Redis)
         "net.debasishg" %% "redisclient" % "3.20",
+
+        // Weeb4J Client
+        "com.github.natanbc" % "weeb4j" % "3.5"
       ),
 
     runKunou := {

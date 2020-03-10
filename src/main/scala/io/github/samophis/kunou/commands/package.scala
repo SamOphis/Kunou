@@ -13,25 +13,23 @@ package object commands {
   val warningColor = new Color(0xFFA046)
   val defaultSuccessColor = new Color(0xD38EFF)
 
-  def okResponseBase(message: Message): EmbedBuilder = {
-    val color = if (message.channel.isDM) {
-      defaultSuccessColor
-    } else {
-      message.guild()
-        .selfMember()
-        .orderedRoles()
-        .asScala
-        .filter(_.color() != 0)
-        .lastOption
-        .map(role => new Color(role.color()))
-        .getOrElse(defaultSuccessColor)
-    }
-
-    new EmbedBuilder()
-      .color(color)
-      .footer(s"Requested by ${message.author().discordTag()}", message.author().effectiveAvatarUrl())
-      .timestamp(OffsetDateTime.now())
+  def successColor(message: Message): Color = if (message.channel.isDM) {
+    defaultSuccessColor
+  } else {
+    message.guild()
+      .selfMember()
+      .orderedRoles()
+      .asScala
+      .filter(_.color() != 0)
+      .lastOption
+      .map(role => new Color(role.color()))
+      .getOrElse(defaultSuccessColor)
   }
+
+  def okResponseBase(message: Message): EmbedBuilder = new EmbedBuilder()
+    .color(successColor(message))
+    .footer(s"Requested by ${message.author().discordTag()}", message.author().effectiveAvatarUrl())
+    .timestamp(OffsetDateTime.now())
 
   def errorResponseBase(message: Message): EmbedBuilder = new EmbedBuilder()
     .color(errorColor)
