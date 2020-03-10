@@ -24,7 +24,7 @@ class Kunou {
   val redisClient = new RedisClient("localhost", 6379) // Kunou runs Redis.
 
   // Weeb4J - Optional
-  val weeb4JOption = sys.env.get("KUNOU_WEEBSH_TOKEN").map {
+  val weeb4JOption: Option[Weeb4J] = sys.env.get("KUNOU_WEEBSH_TOKEN").map {
     new Weeb4J.Builder()
       .setToken(TokenType.WOLKE, _)
       .build()
