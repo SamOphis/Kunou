@@ -9,14 +9,17 @@ class PingCommand extends Command {
   override val name: String = "ping"
 
   override def execute(bot: Kunou, message: Message, prefix: String): Unit = {
+    // Specifying the type explicitly is unnecessary here, but IntelliJ doesn't like it and I don't want my IDE
+    // - showing errors but the compiler being fine. I like consistency.
+
     val currentTimeNano = System.nanoTime
     bot.catnip.rest.user.getCurrentUser.subscribe((_: User) => {
       val nextCurrentTimeNano = System.nanoTime
-      val differenceInTimeMillis = (nextCurrentTimeNano.toDouble - currentTimeNano.toDouble) / 1000000
-      val differenceFormatted = String.format("**%.2fms**", differenceInTimeMillis)
+      val differenceInTimeMillis = (nextCurrentTimeNano - currentTimeNano) / 1000000.toDouble
+      val differenceFormatted = f"**$differenceInTimeMillis%.2fms**"
 
       import io.github.samophis.kunou.commands.okResponseBase
-      val response = okResponseBase(message).description("Discord API Latency: " + differenceFormatted).build()
+      val response = okResponseBase(message).description(s"Discord API Latency: $differenceFormatted").build()
       message.channel.sendMessage(response)
     })
   }
