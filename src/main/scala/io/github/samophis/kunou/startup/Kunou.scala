@@ -29,12 +29,14 @@ class Kunou {
       .setToken(TokenType.WOLKE, _)
       .build()
   }
-  private[this] val commandManager = new CommandManager(this)
+  val commandManager = new CommandManager(this)
 
   // There is a warning here (can convert to method value), but Catnip doesn't like it.
   // +1 for Java interoperability, Scala.
   catnip.observable(DiscordEvent.MESSAGE_CREATE).subscribe(commandManager.handleMessage(_))
   catnip.connect()
+
+  lazy val userId: Long = catnip.selfUser.idAsLong
 
   sys.env.get("KUNOU_SENTRY_DSN") match {
     case Some(sentryDsn) =>
