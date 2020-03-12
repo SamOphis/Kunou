@@ -6,3 +6,7 @@ run.sh
 .idea/
 null/
 project/build.properties
+project/target
+project/project
+target/
+src/main/test
