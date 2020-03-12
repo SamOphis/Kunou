@@ -8,7 +8,7 @@ import io.github.samophis.kunou.startup.Kunou
 trait Command {
   val name: String
   // This field is lazy as some commands (read: EmoteCommand as of 2020/03/12) rely on initially null values.
-  lazy val description: Option[String] = None
+  lazy val description: String = "No description is available for this command."
 
   val usage: String = name
   // These permission lists are lists, not sets, so that we can inter-op with Catnip seamlessly.

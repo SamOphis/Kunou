@@ -21,6 +21,7 @@ class HelpCommand extends Command {
       case Some(command) =>
         val builder = okResponseBase(message)
           .title(s"$prefix${command.name} Command")
+          .description(command.description)
           .field("Usage", s"$prefix${command.name}", true)
           .field("Category", command.category.toString, true)
           .thumbnail(bot.catnip.selfUser.effectiveAvatarUrl)
@@ -30,11 +31,6 @@ class HelpCommand extends Command {
           case aliases =>
             val asString = aliases.mkString("\n")
             builder.field("Aliases", asString, true)
-        }
-
-        command.description match {
-          case Some(description) => builder.description(description)
-          case None => builder.description("No description is available for this command.")
         }
 
         command.requiredUserPermissions match {
