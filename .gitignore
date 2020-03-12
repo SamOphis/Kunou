@@ -2,4 +2,7 @@
 ### Scala template
 *.class
 *.log
-
+run.sh
+.idea/
+null/
+project/build.properties
