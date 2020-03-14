@@ -62,9 +62,9 @@ class HelpCommand extends Command {
          |Please say "<@${bot.userId}> prefix" (without quotes) to find Kunou's prefix for the current server, which is `$prefix` as of now.
          |
          |The default prefix globally is `${bot.defaultCommandPrefix}`, but please remember that server admins
-         |can change Kunou's default prefix for their specific server using the k->prefix command.
+         |can change Kunou's default prefix for their specific server using the `${prefix}prefix` command.
          |
-         |You can find a list of commands with the k->cmdlist command. Thank you for using Kunou!
+         |You can find a list of commands with the `${prefix}cmdlist` command. Thank you for using Kunou!
          |""".stripMargin
     val embed = okResponseBase(message)
       .author("Introduction", null, bot.catnip.selfUser.effectiveAvatarUrl)
