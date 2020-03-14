@@ -29,11 +29,15 @@ class CommandManager(private[this] val bot: Kunou) {
     .filter(!_.isAbstract)
     .forEach(classInfo => {
       logger.debug("Found {}, loading...", classInfo.getName)
+
       val command = classInfo.loadClass(false)
         .getDeclaredConstructor()
         .newInstance()
         .asInstanceOf[Command]
+
       commands.put(command.name, command)
+      command.aliases.foreach(commands.put(_, command))
+
       logger.info("Registered {}", classInfo.getSimpleName)
     })
   scanResult.close()
