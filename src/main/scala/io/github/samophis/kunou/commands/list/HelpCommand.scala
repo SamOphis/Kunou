@@ -20,11 +20,10 @@ class HelpCommand extends Command {
     bot.commandManager.commands.get(args(1).toLowerCase.replace(prefix, "")) match {
       case Some(command) =>
         val builder = okResponseBase(message)
-          .title(s"$prefix${command.name} Command")
+          .author(s"$prefix${command.name} Command", null, bot.catnip.selfUser.effectiveAvatarUrl)
           .description(command.description)
           .field("Usage", s"$prefix${command.name}", true)
           .field("Category", command.category.toString, true)
-          .thumbnail(bot.catnip.selfUser.effectiveAvatarUrl)
 
         command.aliases match {
           case aliases if aliases.isEmpty =>
@@ -67,7 +66,10 @@ class HelpCommand extends Command {
          |
          |You can find a list of commands with the k->cmdlist command. Thank you for using Kunou!
          |""".stripMargin
-    val embed = okResponseBase(message).title("Introduction").description(helpText).build()
+    val embed = okResponseBase(message)
+      .author("Introduction", null, bot.catnip.selfUser.effectiveAvatarUrl)
+      .description(helpText)
+      .build()
     message.channel.sendMessage(embed)
   }
 }
