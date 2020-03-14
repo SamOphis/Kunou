@@ -11,7 +11,7 @@ import io.github.samophis.kunou.startup.Kunou
 trait EmoteCommand extends Command {
   private[this] val logger = Logger[EmoteCommand]
 
-  override lazy val description: Option[String] = Some(s"Sends an image/gif related to the `$name` image type.")
+  override lazy val description: String = s"Sends an image/gif related to the `$name` image type."
   override val category: CommandCategory = CommandCategory.Social
 
   override def execute(bot: Kunou, message: Message, prefix: String): Unit = {
