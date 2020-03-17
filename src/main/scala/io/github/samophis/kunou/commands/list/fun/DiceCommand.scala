@@ -9,6 +9,8 @@ class DiceCommand extends Command {
   override val name: String = "dice"
   override val aliases: Set[String] = Set("roll")
   override val category: CommandCategory = CommandCategory.Fun
+  override lazy val description: String = "Rolls a dice. Can be used as random-number generator."
+  override val usage: String = "[integer number of sides, upto 100]"
 
   private[this] val random = scala.util.Random
 

@@ -2,15 +2,14 @@ package io.github.samophis.kunou.commands.list.general.prefix
 
 import com.mewna.catnip.entity.message.Message
 import com.mewna.catnip.entity.util.Permission
-import io.github.samophis.kunou.commands.CommandCategory.CommandCategory
-import io.github.samophis.kunou.commands.{Command, CommandCategory}
+import io.github.samophis.kunou.commands.Command
 import io.github.samophis.kunou.startup.Kunou
 
 class PrefixCommand extends Command {
   override val name: String = "prefix"
   override lazy val description: String = "Modifies Kunou's local prefix for this server."
   override val requiredUserPermissions: List[Permission] = List(Permission.ADMINISTRATOR)
-  override val category: CommandCategory = CommandCategory.General
+  override val usage: String = "<prefix, no ` character, no longer than 20 characters>"
 
   override def execute(bot: Kunou, message: Message, prefix: String): Unit = {
     import io.github.samophis.kunou.commands.{okResponseBase, warningResponseBase}

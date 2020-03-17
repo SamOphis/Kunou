@@ -7,6 +7,7 @@ import io.github.samophis.kunou.startup.Kunou
 
 class PingCommand extends Command {
   override val name: String = "ping"
+  override lazy val description: String = "Fetches the latency between Kunou and Discord's REST API."
 
   override def execute(bot: Kunou, message: Message, prefix: String): Unit = {
     // Specifying the type explicitly is unnecessary here, but IntelliJ doesn't like it and I don't want my IDE

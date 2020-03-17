@@ -7,6 +7,8 @@ import io.github.samophis.kunou.startup.Kunou
 
 class HelpCommand extends Command {
   override val name: String = "help"
+  override lazy val description: String = "Generates a help message for the bot as a whole or for specific commands."
+  override val usage: String = "[command]"
 
   override def execute(bot: Kunou, message: Message, prefix: String): Unit = {
     import io.github.samophis.kunou.commands._
