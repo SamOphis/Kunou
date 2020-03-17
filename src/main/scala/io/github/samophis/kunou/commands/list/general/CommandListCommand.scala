@@ -1,4 +1,4 @@
-package io.github.samophis.kunou.commands.list
+package io.github.samophis.kunou.commands.list.general
 
 import com.mewna.catnip.entity.message.Message
 import io.github.samophis.kunou.commands.Command
