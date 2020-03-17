@@ -12,8 +12,9 @@ Social emote commands use the [weeb.sh](https://weeb.sh/) service.
 
 # Self-hosting Details
 Kunou isn't particularly complicated to self-host. The project uses the [sbt](https://www.scala-sbt.org/) build tool,
-and a custom `runKunou` task has been made *for local debug purposes only*, which just creates a user-friendly application packaged into a `tar.xz` archive,
-then unpacks it, runs the application, and any output is echoed to the console.
+and a custom `runKunou` task has been made *for local debug purposes only*, which just creates a user-friendly application packaged into a `tar.xz` archive, then unpacks it, runs the application, and any output is echoed to the console.
+
+> **Note:** `runKunou` relies on a `run.sh` shell script in working directory. I generally advise *against* using the `runKunou` task unless you have a dev environment equivalent to my local one.
 
 For production, you can use the `universal:packageXzTarball` task or any other similar ones depending on your system, unpack it
 and use the generated executable. Note that a [Redis](https://redis.io/) server must be running locally on port 6379, or all messages
