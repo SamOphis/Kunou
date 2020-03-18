@@ -21,7 +21,7 @@ class StealEmojiCommand extends Command {
   override val aliases: Set[String] = Set("steal", "stealemote")
 
   override val requiredUserPermissions: List[Permission] = List(Permission.MANAGE_EMOJI)
-  override val requiredBotPermissions: List[Permission] = List(Permission.MANAGE_EMOJI)
+  override val requiredBotPermissions: List[Permission] = List(Permission.MANAGE_EMOJI, Permission.USE_EXTERNAL_EMOJI)
 
   private[this] val emojiPattern = "<(a)?:(\\w+):(\\d+)>".r
   private[this] val firefoxUserAgent = "Mozilla/5.0 (Windows; rv:17.0) Gecko/20100101 Firefox/17.0"
@@ -65,9 +65,9 @@ class StealEmojiCommand extends Command {
 
       val base64Data = Base64.getEncoder.encodeToString(response.body)
       val uri = URI.create(s"data:image/png;base64,$base64Data")
-      message.guild.createEmoji(name, uri, Collections.emptyList[String]).doOnSuccess(_ => {
+      message.guild.createEmoji(name, uri, Collections.emptyList[String]).doOnSuccess(emote => {
         val success = okResponseBase(message)
-          .description(s"Successfully stole the **$name** emoji.")
+          .description(s"Successfully stole the ${emote.forMessage} emoji.")
           .build
         message.channel.sendMessage(success)
       }).doOnError(error => {
