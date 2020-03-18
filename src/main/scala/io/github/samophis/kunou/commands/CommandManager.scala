@@ -66,9 +66,15 @@ class CommandManager(private[this] val bot: Kunou) {
         val commandName = args(0).toLowerCase.substring(prefix.length)
         commands.get(commandName) match {
           case Some(command) if !message.member().hasPermissions(command.requiredUserPermissions: _*) =>
-            message.channel().sendMessage("You don't have permission to use this command. \uD83D\uDE2D")
+            val warning = warningResponseBase(message)
+              .description("You don't have permission to use this command.")
+              .build
+            message.channel.sendMessage(warning)
           case Some(command) if !message.guild().selfMember().hasPermissions(command.requiredBotPermissions: _*) =>
-            message.channel().sendMessage("I don't have permission to use this command. \uD83D\uDE2D")
+            val warning = warningResponseBase(message)
+              .description("I don't have permission to use this command.")
+              .build
+            message.channel.sendMessage(warning)
           case Some(command) =>
             executionContext.execute(() => command.execute(bot, message, prefix))
           case None =>
@@ -81,7 +87,7 @@ class CommandManager(private[this] val bot: Kunou) {
   }
 
   def prefix(message: Message): Future[String] = Future {
-    val guildId = message.guildIdAsLong()
+    val guildId = message.guildIdAsLong
     bot.redisClient.hget(guildId, "_prefix") match {
       case Some(prefix) => prefix
       case None => bot.defaultCommandPrefix
