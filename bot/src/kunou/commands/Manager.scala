@@ -1,16 +1,22 @@
 package kunou.commands
 
+import java.util
 import java.util.concurrent.Executors
 
 import ackcord.APIMessage
 import ackcord.data.{GuildGatewayMessage, Message}
+import com.typesafe.scalalogging.Logger
 import io.github.classgraph.ClassGraph
 import kunou.startup.Kunou
 
 import scala.collection.mutable
 import scala.concurrent.ExecutionContext
+import scala.util.control.NonFatal
 
 case class Manager(bot: Kunou) {
+  // The logger.
+  private val logger = Logger[Manager]
+
   // This collection is mutable so as to allow for the creation of runtime commands.
   private val commands = mutable.Map[String, Command]()
 
@@ -57,13 +63,22 @@ case class Manager(bot: Kunou) {
               commands.get(firstArgument) match {
                 case Some(command) =>
                   val context = Context(bot, message, cacheSnapshot, arguments.toList, prefix)
-                  commandExecutionContext.execute(() => command.executeWithChecks(context))
+                  commandExecutionContext.execute(() => {
+                    try {
+                      command.executeWithChecks(context)
+                    } catch {
+                      case NonFatal(error) => logger.error(
+                        s"""
+                           |Non fatal error (${error.getClass.getSimpleName}) when executing ${command.name} command.
+                           |${error.getStackTrace.mkString("\n")}
+                           |""".stripMargin)
+                    }
+                  })
 
                 case _ =>
               }
             }
           }
-        case _ =>
       }
     }
   }
