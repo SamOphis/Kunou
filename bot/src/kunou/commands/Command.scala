@@ -20,9 +20,9 @@ trait Command {
 
   def aliases: Set[String] = Set.empty
 
-  def execute(context: Context): Unit
+  def execute(implicit context: Context): Unit
 
-  final def executeWithChecks(context: Context): Unit = {
+  final def executeWithChecks(implicit context: Context): Unit = {
     for (precondition <- requiredPreconditions) {
       if (!precondition(context)) {
         return
@@ -47,6 +47,6 @@ object Command {
   def apply(commandName: String, function: Context => Unit): Command = new Command {
     override def name: String = commandName
 
-    override def execute(context: Context): Unit = function(context)
+    override def execute(implicit context: Context): Unit = function(context)
   }
 }
