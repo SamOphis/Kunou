@@ -23,6 +23,8 @@ case class Manager(bot: Kunou) {
   // The execution context where commands are executed.
   private val commandExecutionContext = ExecutionContext.fromExecutor(Executors.newCachedThreadPool())
 
+  def commandMap: Map[String, Command] = commands.toMap
+
   def registerCommand(command: Command): Unit = commands.put(command.name, command)
 
   def registerCommandWithAliases(command: Command): Unit = {
