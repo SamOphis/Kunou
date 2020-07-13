@@ -38,10 +38,21 @@ case class Manager(bot: Kunou) {
       .scan()
 
     try {
+      val KunouClass = classOf[Kunou]
       scanResult.getClassesImplementing("kunou.commands.Command")
         .stream()
         .filter(!_.isAbstract)
-        .map[Command](_.loadClass(false).getDeclaredConstructor().newInstance().asInstanceOf[Command])
+        .map[Command](classInfo => {
+          val cls = classInfo.loadClass(false)
+          val firstConstructor = cls.getDeclaredConstructors()(0)
+
+          val instance = firstConstructor.getParameterTypes match {
+            case Array(KunouClass) => firstConstructor.newInstance(bot)
+            case Array() => firstConstructor.newInstance()
+          }
+
+          instance.asInstanceOf[Command]
+        })
         .forEach(registerCommand)
     } finally {
       scanResult.close()
