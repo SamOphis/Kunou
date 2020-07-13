@@ -64,7 +64,7 @@ case class Manager(bot: Kunou) {
               val firstArgument = arguments(0).replace(prefix, "")
               commands.get(firstArgument) match {
                 case Some(command) =>
-                  val context = Context(bot, message, cacheSnapshot, arguments.drop(1).toList, prefix)
+                  val context = Context(bot, message, cacheSnapshot, arguments.toList.drop(1), prefix)
                   commandExecutionContext.execute(() => {
                     try {
                       command.executeWithChecks(context)
