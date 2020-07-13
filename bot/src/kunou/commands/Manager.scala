@@ -53,7 +53,7 @@ case class Manager(bot: Kunou) {
 
           instance.asInstanceOf[Command]
         })
-        .forEach(registerCommand)
+        .forEach(registerCommandWithAliases)
     } finally {
       scanResult.close()
     }
