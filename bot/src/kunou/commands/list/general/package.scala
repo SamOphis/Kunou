@@ -49,7 +49,8 @@ package object general {
     import bot.discordClient.requestsHelper.run
     import scala.collection.{Set => SetParent}
 
-    private val categoryCommandSetMap: mutable.Map[Category, mutable.Buffer[Command]] = mutable.Map()
+    // This uses a set rather than a normal buffer to account for aliases.
+    private val categoryCommandSetMap: mutable.Map[Category, mutable.Set[Command]] = mutable.Map()
 
     override def name: String = "commandlist"
 
@@ -61,11 +62,11 @@ package object general {
       if (categoryCommandSetMap.isEmpty) {
         bot.commandManager.commandMap.values.foreach(command => {
           categoryCommandSetMap.get(command.category) match {
-            case Some(buffer) => buffer += command
+            case Some(set) => set += command
             case _ =>
-              val newBuffer = mutable.Buffer[Command]()
-              newBuffer += command
-              categoryCommandSetMap.put(command.category, newBuffer)
+              val newSet = mutable.Set[Command]()
+              newSet += command
+              categoryCommandSetMap.put(command.category, newSet)
           }
         })
       }
