@@ -3,7 +3,7 @@ package kunou
 import java.time.OffsetDateTime
 
 import ackcord.CacheSnapshot
-import ackcord.data.{OutgoingEmbed, OutgoingEmbedFooter, TextChannel, User}
+import ackcord.data.{OutgoingEmbed, OutgoingEmbedFooter, TextChannel, TextChannelId, User}
 import ackcord.requests.{CreateMessage, CreateMessageData}
 import kunou.commands.Context
 
@@ -47,9 +47,9 @@ package object syntax {
     }
   }
 
-  implicit class TextChannelSyntax(private val textChannel: TextChannel) extends AnyVal {
+  implicit class TextChannelIdSyntax(private val textChannelId: TextChannelId) extends AnyVal {
     def sendEmbed(embed: OutgoingEmbed): CreateMessage =
-      CreateMessage(textChannel.id, CreateMessageData(embed = Some(embed)))
+      CreateMessage(textChannelId, CreateMessageData(embed = Some(embed)))
   }
 
   object EmbedHelperSyntax {
