@@ -1,6 +1,9 @@
 .coursier/
+.bloop/
+.metals/
 .idea/
 .idea_modules/
 out/
+kunou.code-workspace
 Kunou.iml
 run.sh
